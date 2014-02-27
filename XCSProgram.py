@@ -1,6 +1,7 @@
 #!/usr/local/bin python
 # -*- coding:utf-8 -*-
 
+import numpy as np
 import random
 import csv
 from XCSConfig import *
@@ -13,8 +14,10 @@ from XCSActionSet import *
 class XCSProgram:
     def __init__(self):
         self.env = XCSEnvironment()
+        self.perf = []
     def init(self):
         self.env = XCSEnvironment()
+        self.perf = []
     def run_experiments(self):
         for exp in range(conf.max_experiments):
             random.seed(exp)
@@ -23,8 +26,10 @@ class XCSProgram:
             self.init()
             for iteration in range(conf.max_iterations):
                 self.run_explor()
+                self.run_exploit(iteration)
             print "now" + str(exp)
             self.file_writer(exp)
+            self.performance_writer()
     def run_explor(self):
         """環境の状態をセット"""
         self.env.set_state()
@@ -47,6 +52,17 @@ class XCSProgram:
         if len(self.pop.cls) > conf.N:
             self.pop.delete_from_population()
         self.actual_time += 1.0
+    def run_exploit(self,iteration):
+        if iteration%100==0:
+            p = 0
+            for i in range(100):
+                self.env.set_state()
+                self.match_set = XCSMatchSet(self.pop,self.env,self.actual_time)
+                self.generate_prediction_array()
+                self.action = self.best_action()
+                if self.env.is_true(self.action):
+                    p += 1
+            self.perf.append(p)
     def select_action(self):
         if random.random() > conf.p_explr:
             self.action = self.best_action()
@@ -153,12 +169,15 @@ class XCSProgram:
     def file_writer(self,num):
         file_name = "population"+str(num)+".csv"
         write_csv = csv.writer(file(file_name,'w'),lineterminator='\n')
-        write_csv.writerow(["condition","action","fitness","prediction"])
+        write_csv.writerow(["condition","action","fitness","prediction","error","numerosity","experience","time_stamp","action_set_size"])
         for cl in self.pop.cls:
             cond = ""
             for c in cl.condition:
                 cond += str(c)
-            write_csv.writerow([cond,cl.action,cl.fitness,cl.prediction])
+            write_csv.writerow([cond,cl.action,cl.fitness,cl.prediction,cl.error,cl.numerosity,cl.experience,cl.time_stamp,cl.action_set_size])
+    def performance_writer(self):
+        file_name = "performance.csv"
+        np.savetxt(file_name, np.array(self.perf),fmt="%d", delimiter=",")
 
 if __name__ == '__main__':
     xcs = XCSProgram()
