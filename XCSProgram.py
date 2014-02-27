@@ -26,14 +26,23 @@ class XCSProgram:
             print "now" + str(exp)
             self.file_writer(exp)
     def run_explor(self):
+        """環境の状態をセット"""
         self.env.set_state()
+        """MatchSet[M]を生成"""
         self.match_set = XCSMatchSet(self.pop,self.env,self.actual_time)
+        """MatchSet[M]に基いて,prediction array[PA]を生成"""
         self.generate_prediction_array()
+        """prediction array[PA]に基づいて行動選択"""
         self.select_action()
+        """選択した行動に基いて,ActionSet[A]を生成する."""
         self.action_set = XCSActionSet(self.match_set,self.action,self.env,self.actual_time)
+        """行動を取る. 教科学習が働く"""
         self.action_set.do_action()
+        """ActionSet[A]内に対してパラメータ更新"""
         self.action_set.update_action_set()
+        """ActionSet[A]内でルールの包摂をする"""
         self.action_set.do_action_set_subsumption(self.pop)
+        """ActionSet[A]に対してGAを回す."""
         self.run_GA()
         if len(self.pop.cls) > conf.N:
             self.pop.delete_from_population()
