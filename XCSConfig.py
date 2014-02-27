@@ -5,7 +5,7 @@ class XCSConfig:
     k = 3
     N = 800
     max_iterations = 20000
-    max_experiments = 1
+    max_experiments = 10
 
     alpha = 0.1
     beta = 0.2

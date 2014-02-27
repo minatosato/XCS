@@ -2,8 +2,11 @@
 # -*- coding:utf-8 -*-
 
 import numpy as np
+import scipy as sp
+import matplotlib.pyplot as plt
 import random
 import csv
+import os.path
 from XCSConfig import *
 from XCSEnvironment import *
 from XCSClassifier import *
@@ -29,7 +32,8 @@ class XCSProgram:
                 self.run_exploit(iteration)
             print "now" + str(exp)
             self.file_writer(exp)
-            self.performance_writer()
+            self.performance_writer(exp)
+        self.make_graph()
     def run_explor(self):
         """環境の状態をセット"""
         self.env.set_state()
@@ -41,7 +45,7 @@ class XCSProgram:
         self.select_action()
         """選択した行動に基いて,ActionSet[A]を生成する."""
         self.action_set = XCSActionSet(self.match_set,self.action,self.env,self.actual_time)
-        """行動を取る. 教科学習が働く"""
+        """行動を取る. 強化学習が働く"""
         self.action_set.do_action()
         """ActionSet[A]内に対してパラメータ更新"""
         self.action_set.update_action_set()
@@ -175,9 +179,42 @@ class XCSProgram:
             for c in cl.condition:
                 cond += str(c)
             write_csv.writerow([cond,cl.action,cl.fitness,cl.prediction,cl.error,cl.numerosity,cl.experience,cl.time_stamp,cl.action_set_size])
-    def performance_writer(self):
-        file_name = "performance.csv"
+    def performance_writer(self,num):
+        file_name = "performance" + str(num) + ".csv"
         np.savetxt(file_name, np.array(self.perf),fmt="%d", delimiter=",")
+    def make_graph(self):
+        performance = []
+        i = 0
+        file_path = "performance" + str(i) + ".csv"
+        while os.path.exists(file_path):
+            pf = np.loadtxt(file_path,delimiter=",")
+            performance.append(pf)
+            i += 1
+            file_path = "performance" + str(i) + ".csv"
+        data_num = i
+        data_length = len(np.loadtxt("performance0.csv",delimiter=","))
+        pf = []
+        x = np.arange(0,data_length*100,100)
+        for i in range(data_length):
+            sum = 0.0
+            for j in range(data_num):
+                sum += performance[j][i] #[0]
+            pf.append(sum/float(data_num))
+        pf = np.array(pf)
+        np.savetxt("ave_performance.csv",pf,delimiter=",")
+        fig = plt.figure(figsize=(16, 9))
+        ax = fig.add_subplot(1,1,1)
+        ax.plot(x, pf, linewidth=2, label='performance')
+        ax.set_ylim(40, 110)
+        ax.set_xlim(0, data_length*100)
+        ax.set_title('Performance')
+        ax.set_yticklabels(['40%','50%','60%','70%','80%','90%','100%',''])
+        ax.grid()
+        filenamepng = "performance.png"
+        plt.savefig(filenamepng, dpi=150)
+        filenameeps = "performance.eps"
+        plt.savefig(filenameeps)
+        plt.show()
 
 if __name__ == '__main__':
     xcs = XCSProgram()
