@@ -24,6 +24,7 @@ class XCSEnvironment:
         ans = int(cal,2)
         self._ans = refbit[ans]
     def is_true(self,ans):
+        """入力された行動が正解かどうか"""
         if self._ans == ans:
             return True
         else:

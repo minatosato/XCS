@@ -38,7 +38,6 @@ class XCSProgram:
         if len(self.pop.cls) > conf.N:
             self.pop.delete_from_population()
         self.actual_time += 1.0
-
     def select_action(self):
         if random.random() > conf.p_explr:
             self.action = self.best_action()
@@ -62,6 +61,7 @@ class XCSProgram:
             if self.f_array[i] != 0:
                 self.p_array[i] /= self.f_array[i]
     def select_offspring(self):
+        """fitnessを元に親をルーレット選択"""
         fit_sum = self.action_set.fitness_sum()
         choice_point = fit_sum * random.random()
         fit_sum = 0.0
@@ -71,6 +71,7 @@ class XCSProgram:
                 return cl
         return None
     def apply_crossover(self,cl1,cl2):
+        """2点交叉適用"""
         length = len(cl1.condition)
         sep1 = int(random.random()*(length))
         sep2 = int(random.random()*(length))
@@ -90,6 +91,7 @@ class XCSProgram:
         cl1.condition = cond1
         cl2.condition = cond2
     def apply_mutation(self,cl):
+        """突然変異"""
         i = 0
         for i in range(len(cl.condition)):
             if random.random() < conf.myu:
@@ -137,7 +139,6 @@ class XCSProgram:
             else:
                 self.pop.insert_in_population(child1)
                 self.pop.insert_in_population(child2)
-
             while self.pop.numerosity_sum() > conf.N:
                 self.pop.delete_from_population()
     def file_writer(self,num):
@@ -149,16 +150,7 @@ class XCSProgram:
             for c in cl.condition:
                 cond += str(c)
             write_csv.writerow([cond,cl.action,cl.fitness,cl.prediction])
+
 if __name__ == '__main__':
     xcs = XCSProgram()
     xcs.run_experiments()
-
-
-
-
-
-
-
-
-
-

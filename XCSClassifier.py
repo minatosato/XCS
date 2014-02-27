@@ -18,7 +18,6 @@ class XCSClassifier:
         self.fitness = 0.01
     def deep_copy(self,actual_time):
         cl = XCSClassifier(self.condition,actual_time)
-        # cl.condition = self.condition
         cl.action = self.action
         cl.prediction = self.prediction
         cl.error = self.error
@@ -73,19 +72,16 @@ class XCSClassifier:
                 ret = True
         return ret
     def get_kappa(self):
-        kappa = 0
+        kappa = 0.0
         if self.error < conf.epsilon_0:
             kappa = 1.0
         else:
             kappa = conf.alpha*math.pow(self.error/conf.epsilon_0,-conf.nyu)
         return kappa
 
+# for debug
 # if __name__ == '__main__':
 #     a = [XCSClassifier([0,0,1],0),XCSClassifier([0,1,0],1)]
 #     for cl in a:
 #         cl.action += 1
 #         print cl.action
-
-
-
-

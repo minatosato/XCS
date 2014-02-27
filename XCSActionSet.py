@@ -16,6 +16,7 @@ class XCSActionSet(XCSClassifierSet):
             if cl.action == self.action:
                 self.cls.append(cl)
     def do_action(self):
+        """行動して正解していれば報酬がもらえる."""
         if self.env.is_true(self.action):
             self.reward = 1000
         else:
@@ -28,6 +29,7 @@ class XCSActionSet(XCSClassifierSet):
         for cl in self.cls:
             cl.update_fitness(acc_sum)
     def do_action_set_subsumption(self,pop):
+        """ルールの包摂"""
         if conf.doActionSetSubsumtion:
             subsumber = None
             for cl in self.cls:
@@ -44,6 +46,7 @@ class XCSActionSet(XCSClassifierSet):
                         i -= 1
                     i += 1
 
+# for debug
 # if __name__ == '__main__':
 #     random.seed(3)
 #     env = XCSEnvironment()

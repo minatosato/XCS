@@ -29,4 +29,4 @@ class XCSConfig:
     doActionSetSubsumtion = True
 
 XCSConfig = XCSConfig()
-conf = XCSConfig #To access one of the above constant values from another module, import XCS_Constants * and use "cons.Xconstant"
+conf = XCSConfig

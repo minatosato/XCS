@@ -14,7 +14,9 @@ class XCSMatchSet(XCSClassifierSet):
         for cl in self.pop.cls:
             if self.does_match(cl):
                 self.cls.append(cl)
-        # Covering
+        """もし条件部の一致するClassifierで全体の行動部の種類が
+        theta_mnaより小さかったらCoveringを実行し,
+        env.stateと条件部の一致するClassifierを意図的に生成する."""
         while self.num_of_different_actions() < conf.theta_mna:
             cond = []
             clm = XCSClassifier(cond,actual_time)
@@ -37,6 +39,7 @@ class XCSMatchSet(XCSClassifierSet):
                     if cl_del in self.cls:
                         self.cls.remove(cl_del)
     def does_match(self,cl):
+        """条件部が一致するか"""
         if len(cl.condition) != len(self.env.state):
             return False
         for i in range(len(cl.condition)):
@@ -44,12 +47,13 @@ class XCSMatchSet(XCSClassifierSet):
                 return False
         return True
     def num_of_different_actions(self):
+        """MatchSet内のClassifierの行動部の種類数を返す"""
         a_list = []
         for cl in self.cls:
             a_list.append(cl.action)
         return len(set(a_list))
     def random_action(self):
-        # return random action not present in [M]
+        """MatchSetのClassifierにない行動部を返す"""
         if len(self.cls)==0:
             return random.randrange(2)
         else:

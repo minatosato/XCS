@@ -41,6 +41,8 @@ class XCSClassifierSet:
             error_sum += cl.error
         return error_sum
     def delete_from_population(self):
+        """ルーレット選択でdeletion_vote()の
+        大きいClassifierを確率的に削除"""
         ave_fitness = self.fitness_sum()/float(self.numerosity_sum())
         vote_sum = 0.0
         for cl in self.cls:
@@ -86,11 +88,4 @@ class XCSClassifierSet:
 #     x.insert_in_population(XCSClassifier([0,0,0],1))
 #     x.insert_in_population(XCSClassifier([0,0,0],1))
 #     print len(x.cls)
-
-
-
-
-
-
-
 
