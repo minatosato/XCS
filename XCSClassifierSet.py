@@ -16,30 +16,15 @@ class XCSClassifierSet:
         clset.cls = self.cls
         return clset
     def accuracy_sum(self):
-        acc_sum = 0.0
-        for cl in self.cls:
-            acc_sum += cl.get_kappa()*cl.numerosity
-        return acc_sum
+        return sum(cl.get_kappa()*cl.numerosity for cl in self.cls)
     def fitness_sum(self):
-        fit_sum = 0.0
-        for cl in self.cls:
-            fit_sum += cl.fitness
-        return fit_sum
+        return sum(cl.fitness for cl in self.cls)
     def numerosity_sum(self):
-        num_sum = 0.0
-        for cl in self.cls:
-            num_sum += cl.numerosity
-        return num_sum
+        return sum(cl.numerosity for cl in self.cls)
     def ts_num_sum(self):
-        ts_num_sum = 0.0
-        for cl in self.cls:
-            ts_num_sum += cl.time_stamp * cl.numerosity
-        return ts_num_sum
+        return sum(cl.time_stamp*cl.numerosity for cl in self.cls)
     def error_sum(self):
-        error_sum = 0.0
-        for cl in self.cls:
-            error_sum += cl.error
-        return error_sum
+        return sum(cl.error for cl in self.cls)
     def delete_from_population(self):
         """ルーレット選択でdeletion_vote()の
         大きいClassifierを確率的に削除"""

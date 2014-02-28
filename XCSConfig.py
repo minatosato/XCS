@@ -2,9 +2,9 @@
 # -*- coding:utf-8 -*-
 
 class XCSConfig:
-    k = 3
-    N = 800
-    max_iterations = 20000
+    k = 2
+    N = 600
+    max_iterations = 3000
     max_experiments = 10
 
     alpha = 0.1

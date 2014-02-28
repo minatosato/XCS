@@ -108,8 +108,8 @@ class XCSProgram:
             tmp = sep1
             sep1 = sep2
             sep2 = tmp
-        # elif sep1==sep2:
-        #     sep2 = sep2+1
+        elif sep1==sep2:
+            sep2 = sep2+1
         cond1 = cl1.condition
         cond2 = cl2.condition
         for i in range(sep1,sep2):
