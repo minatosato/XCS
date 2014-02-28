@@ -109,7 +109,7 @@ class XCSProgram:
             sep1 = sep2
             sep2 = tmp
         # elif sep1==sep2:
-            # sep2 = sep2+1
+        #     sep2 = sep2+1
         cond1 = cl1.condition
         cond2 = cl2.condition
         for i in range(sep1,sep2):
@@ -184,6 +184,7 @@ class XCSProgram:
         np.savetxt(file_name, np.array(self.perf),fmt="%d", delimiter=",")
     def make_graph(self):
         performance = []
+        """操作するファイルはperformance0.csvスタート"""
         i = 0
         file_path = "performance" + str(i) + ".csv"
         while os.path.exists(file_path):
@@ -191,18 +192,21 @@ class XCSProgram:
             performance.append(pf)
             i += 1
             file_path = "performance" + str(i) + ".csv"
+        """データの数 = whileでインクリメントした分"""
         data_num = i
+        """データの中身の長さ = np.loadtxtしたデータのlen"""
         data_length = len(np.loadtxt("performance0.csv",delimiter=","))
         pf = []
+        """0, 100, 200, 300, ..., data_length*100"""
         x = np.arange(0,data_length*100,100)
         for i in range(data_length):
             sum = 0.0
             for j in range(data_num):
-                sum += performance[j][i] #[0]
+                sum += performance[j][i]
             pf.append(sum/float(data_num))
         pf = np.array(pf)
         np.savetxt("ave_performance.csv",pf,delimiter=",")
-        fig = plt.figure(figsize=(16, 9))
+        fig = plt.figure(figsize=(16, 10))
         ax = fig.add_subplot(1,1,1)
         ax.plot(x, pf, linewidth=2, label='performance')
         ax.set_ylim(40, 110)

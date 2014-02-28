@@ -53,7 +53,7 @@ class XCSMatchSet(XCSClassifierSet):
             a_list.append(cl.action)
         return len(set(a_list))
     def random_action(self):
-        """MatchSetのClassifierにない行動部を返す"""
+        """MatchSetのClassifierにない行動部をランダムで返す"""
         if len(self.cls)==0:
             return random.randrange(2)
         else:
