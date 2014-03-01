@@ -31,16 +31,16 @@ class XCSActionSet(XCSClassifierSet):
     def do_action_set_subsumption(self,pop):
         """ルールの包摂"""
         if conf.doActionSetSubsumtion:
-            subsumber = None
+            subsumer = None
             for cl in self.cls:
                 if cl.could_subsume():
-                    if subsumber==None or cl.is_more_general(subsumber):
-                        subsumber = cl
-            if subsumber!=None:
+                    if subsumer==None or cl.is_more_general(subsumer):
+                        subsumer = cl
+            if subsumer!=None:
                 i=0
                 while i<len(self.cls):
-                    if subsumber.is_more_general(self.cls[i]):
-                        subsumber.numerosity += self.cls[i].numerosity
+                    if subsumer.is_more_general(self.cls[i]):
+                        subsumer.numerosity += self.cls[i].numerosity
                         pop.remove_classifier_by_instance(self.cls[i])
                         self.remove_classifier(i)
                         i -= 1
