@@ -7,17 +7,17 @@ from XCSConfig import *
 
 class XCSEnvironment:
     def __init__(self):
-        self._k = conf.k
-        self._length = int(self._k+math.pow(2,self._k))
+        self.__k = conf.k
+        self.__length = int(self.__k+math.pow(2,self.__k))
     def set_state(self):
-        self._state = []
-        for i in xrange(self._length):
+        self.__state = []
+        for i in xrange(self.__length):
             if random.randrange(2)==0:
-                self.state.append(0)
+                self.__state.append(0)
             else:
-                self.state.append(1)
-        addbit = self.state[0:conf.k]
-        refbit = self.state[conf.k:]
+                self.__state.append(1)
+        addbit = self.__state[0:conf.k]
+        refbit = self.__state[conf.k:]
         cal = ""
         for x in range(len(addbit)):
             cal += str(addbit[x])
@@ -30,7 +30,7 @@ class XCSEnvironment:
         else:
             return False
     def get_state(self):
-        return self._state
+        return self.__state
     state = property(get_state)
 
 # if __name__ == '__main__':
