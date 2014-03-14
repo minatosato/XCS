@@ -61,7 +61,8 @@ class XCSMatchSet(XCSClassifierSet):
                 return 0
             else:
                 return 1
-
+                
+# for debug
 # if __name__ == '__main__':
 #     env = XCSEnvironment()
 #     env.set_state()

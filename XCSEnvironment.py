@@ -33,6 +33,7 @@ class XCSEnvironment:
         return self.__state
     state = property(get_state)
 
+# for debug
 # if __name__ == '__main__':
 #     env = XCSEnvironment()
 #     env.set_state()

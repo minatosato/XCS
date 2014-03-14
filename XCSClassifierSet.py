@@ -29,9 +29,7 @@ class XCSClassifierSet:
         """ルーレット選択でdeletion_vote()の
         大きいClassifierを確率的に削除"""
         ave_fitness = self.fitness_sum()/float(self.numerosity_sum())
-        vote_sum = 0.0
-        for cl in self.cls:
-            vote_sum += cl.deletion_vote(ave_fitness)
+        vote_sum = sum(cl.deletion_vote(ave_fitness) for cl in self.cls)
         choice_point = vote_sum * random.random()
         vote_sum = 0.0
         i = 0
@@ -63,6 +61,7 @@ class XCSClassifierSet:
                 return
         self.cls.append(cl)
 
+# for debug
 # if __name__ == '__main__':
 #     env = XCSEnvironment()
 #     env.set_state()

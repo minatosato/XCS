@@ -105,18 +105,14 @@ class XCSProgram:
         sep1 = int(random.random()*(length))
         sep2 = int(random.random()*(length))
         if sep1>sep2:
-            tmp = sep1
-            sep1 = sep2
-            sep2 = tmp
+            sep1,sep2 = sep2,sep1
         elif sep1==sep2:
             sep2 = sep2+1
         cond1 = cl1.condition
         cond2 = cl2.condition
         for i in range(sep1,sep2):
             if cond1[i] != cond2[i]:
-                tmp   = cond1[i]
-                cond1[i]= cond2[i]
-                cond2[i]= tmp
+                cond1[i],cond2[i] = cond2[i],cond1[i]
         cl1.condition = cond1
         cl2.condition = cond2
     def apply_mutation(self,cl):
